@@ -5,3 +5,4 @@ config:
   port_to: 100
   timeout: 1
   thread_count: 10
+  output_path: result.json

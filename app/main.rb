@@ -1,6 +1,7 @@
 require 'socket'
 require 'timeout'
 require 'yaml'
+require 'json'
 
 # 設定ファイルの読み込み
 config = YAML.load_file('./config.yaml')['config']
@@ -9,6 +10,7 @@ port_from = config['port_from'].to_i
 port_to = config['port_to'].to_i
 thread_count = config['thread_count'].to_i
 timeout = config['timeout'].to_i
+output_path = config['output_path']
 
 def port_open?(ip, port)
   begin
@@ -51,10 +53,22 @@ end
 threads.each { |t| t.join }
 
 # ポート番号と結果を表示
+output = {}
+open_ports = []
+closed_ports = []
+
 ports_results.each do |port, result|
   if result
-    puts "ポート #{port} は開いています。"
+    open_ports << port
   else
-    puts "ポート #{port} は閉じています。"
+    closed_ports << port
   end
+end
+
+output['open_ports'] = open_ports
+output['closed_ports'] = closed_ports
+
+# JSON形式に変換して保存
+File.open(output_path, 'w') do |file|
+  file.puts JSON.pretty_generate(output)
 end
