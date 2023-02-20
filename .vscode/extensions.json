@@ -1,0 +1,12 @@
+{
+  "recommendations": [
+    "koichisasada.vscode-rdbg",
+    "shopify.ruby-lsp",
+    "shopify.ruby-extensions-pack",
+    "rebornix.ruby",
+    "davidanson.vscode-markdownlint",
+    "github.copilot",
+    "mhutchie.git-graph",
+    "editorconfig.editorconfig"
+  ]
+}
