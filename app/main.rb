@@ -1,5 +1,14 @@
 require 'socket'
 require 'timeout'
+require 'yaml'
+
+# 設定ファイルの読み込み
+config = YAML.load_file('./config.yaml')['config']
+host = config['host']
+port_from = config['port_from'].to_i
+port_to = config['port_to'].to_i
+thread_count = config['thread_count'].to_i
+timeout = config['timeout'].to_i
 
 def port_open?(ip, port)
   begin
@@ -12,16 +21,6 @@ def port_open?(ip, port)
     { port => false }
   end
 end
-
-# スキャン対象のIPアドレスを設定
-ip_address = "github.com"
-
-# スキャン対象のポート範囲を指定
-port_from = 80
-port_to = 100
-
-# スレッドの数を指定
-thread_count = 10
 
 # Mutexオブジェクトを作成
 mutex = Mutex.new
@@ -39,7 +38,7 @@ threads = []
           port_from += 1
         end
         break if port_number > port_to
-        port_result = port_open?(ip_address, port_number)
+        port_result = port_open?(host, port_number)
         mutex.synchronize do
           ports_results.merge!(port_result)
         end
