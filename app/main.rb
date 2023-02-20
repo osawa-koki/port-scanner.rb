@@ -65,6 +65,9 @@ ports_results.each do |port, result|
   end
 end
 
+output['host'] = host
+output['timeout'] = timeout_sec
+output['checked_at'] = Time.now
 output['open_ports'] = open_ports
 output['closed_ports'] = closed_ports
 
