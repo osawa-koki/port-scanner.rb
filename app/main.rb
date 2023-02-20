@@ -1,19 +1,20 @@
 require 'socket'
+require 'timeout'
 
 def port_open?(ip, port)
   begin
-    Timeout::timeout(3) do
+    Timeout::timeout(1) do
       s = TCPSocket.new(ip, port)
       s.close
     end
     { port => true }
-  rescue
+  rescue Timeout::Error, Errno::ETIMEDOUT
     { port => false }
   end
 end
 
 # スキャン対象のIPアドレスを設定
-ip_address = "google.com"
+ip_address = "github.com"
 
 # スキャン対象のポート範囲を指定
 port_from = 80
@@ -27,8 +28,9 @@ mutex = Mutex.new
 
 # スレッドを使用してポートスキャンを実行し、結果をハッシュに追加
 ports_results = {}
-threads = (1..thread_count).map do
-  Thread.new do
+threads = []
+(1..thread_count).each do
+  threads << Thread.new do
     begin
       while true do
         port_number = nil
