@@ -9,12 +9,12 @@ host = config['host']
 port_from = config['port_from'].to_i
 port_to = config['port_to'].to_i
 thread_count = config['thread_count'].to_i
-timeout = config['timeout'].to_i
+timeout_sec = config['timeout_sec'].to_i
 output_path = config['output_path']
 
-def port_open?(ip, port)
+def port_open?(ip, port, timeout_sec)
   begin
-    Timeout::timeout(1) do
+    Timeout::timeout(timeout_sec) do
       s = TCPSocket.new(ip, port)
       s.close
     end
@@ -40,7 +40,7 @@ threads = []
           port_from += 1
         end
         break if port_number > port_to
-        port_result = port_open?(host, port_number)
+        port_result = port_open?(host, port_number, timeout_sec)
         mutex.synchronize do
           ports_results.merge!(port_result)
         end
