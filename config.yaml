@@ -1,0 +1,8 @@
+
+config:
+  host: github.com
+  port_from: 70
+  port_to: 100
+  timeout_sec: 1
+  thread_count: 10
+  output_path: result.json
