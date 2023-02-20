@@ -11,6 +11,8 @@ docker compose up app -d [--build]
 ```
 
 設定ファイル(config.yaml)を編集して、ポートスキャンの設定を変更してください。  
+実行後は`result.yaml`(デフォルト)に結果が出力されます。  
+
 
 ---
 
